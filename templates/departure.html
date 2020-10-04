@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block departure %}
+<main class="container mt-3">
+    <h1 class="display-5 mt-4">Летим из {{data.departures[departure].split()|last}}</h1>
+    <p class="mb-4">Найдено {{data.tours.values()|selectattr('departure', 'equalto', departure)|list|length}} туров, от
+        {{(data.tours.values()|selectattr('departure', 'equalto', departure)|min(attribute='price')).price}} до
+        {{(data.tours.values()|selectattr('departure', 'equalto', departure)|max(attribute='price')).price}} рублей и от
+        {{(data.tours.values()|selectattr('departure', 'equalto', departure)|min(attribute='nights')).nights}} до
+        {{(data.tours.values()|selectattr('departure', 'equalto', departure)|max(attribute='nights')).nights}} ночей</p>
+    <!-- CARDS -->
+    <div class="row mt-5">
+        {% for id, tour in data.tours.items() %}
+        {% if tour.departure == departure %}
+        <div class="col-4">
+            <div class="card mb-4">
+                <img src="{{tour.picture}}" class="card-img-top img-fluid" alt="">
+                <div class="card-body">
+                    <h2 class="h5 card-title">{{tour.title}}</h2>
+                    <p class="card-text">{{tour.description}}</p>
+                    <a href="/tours/{{id}}" class="btn btn-sm btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
